@@ -52,8 +52,9 @@ def Readfiche(post_id):
 @app.route('/fiche_nom/<post_str>')
 def ReadficheNom(post_str):
       if request.method == 'GET':
-        # Vérifier les identifiants
-        if request.form['username'] == 'user' and request.form['password'] == '12345': # password à cacher par la suite
+        username = request.args.get('username')
+        password = request.args.get('password')
+        if username == 'user' and password == '12345': # password à cacher par la suite
             conn = sqlite3.connect('database.db')
             cursor = conn.cursor()
             cursor.execute('SELECT * FROM clients WHERE nom = ?', (post_str,))
