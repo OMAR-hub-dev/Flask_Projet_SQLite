@@ -29,7 +29,7 @@ def lecture():
 def authentification():
     if request.method == 'POST':
         # Vérifier les identifiants
-        if request.form['username'] == 'admin' and request.form['password'] == 'password': # password à cacher par la suite
+        if request.form['username'] == 'admin'or request.form['username'] == 'user'  and request.form['password'] == 'password'or request.form['password'] == '12345': # password à cacher par la suite
             session['authentifie'] = True
             # Rediriger vers la route lecture après une authentification réussie
             return redirect(url_for('lecture'))
@@ -51,19 +51,15 @@ def Readfiche(post_id):
 
 @app.route('/fiche_nom/<post_str>')
 def ReadficheNom(post_str):
-      if request.method == 'GET':
-        username = request.args.get('username')
-        password = request.args.get('password')
-        if username == 'user' and password == '12345': # password à cacher par la suite
-            conn = sqlite3.connect('database.db')
-            cursor = conn.cursor()
-            cursor.execute('SELECT * FROM clients WHERE nom = ?', (post_str,))
-            data = cursor.fetchall()
-            conn.close()
+     
+        conn = sqlite3.connect('database.db')
+        cursor = conn.cursor()
+        cursor.execute('SELECT * FROM clients WHERE nom = ?', (post_str,))
+        data = cursor.fetchall()
+        conn.close()
             # Rendre le template HTML et transmettre les données
-            return render_template('read_data.html', data=data)
-        else : 
-            render_template('formulaire_authentification.html', error=False)
+        return render_template('read_data.html', data=data)
+        
 
 @app.route('/consultation/')
 def ReadBDD():
